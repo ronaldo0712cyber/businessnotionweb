@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <title>Money Clarity for Business Students — Ron's Enterprises</title>
+  <meta name="description" content="Finance clarity for business students. Track income, expenses, and savings with a simple Notion tracker by Ron's Enterprises." />
+
+  <!-- Basic security hardening (works on static sites) -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+
+  <!-- Strong CSP: no external scripts, no iframes, no object embeds -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    base-uri 'self';
+    object-src 'none';
+    frame-ancestors 'none';
+    script-src 'self';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data:;
+    connect-src 'self';
+    form-action 'self' mailto:;
+    upgrade-insecure-requests;
+    block-all-mixed-content;
+  ">
+
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --card:#111525;
+      --muted:#aab1c5;
+      --text:#eef2ff;
+      --accent:#7c5cff;
+      --accent2:#22c55e;
+      --stroke:rgba(255,255,255,.08);
+      --shadow: 0 14px 60px rgba(0,0,0,.55);
+      --radius:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(124,92,255,.30), transparent 55%),
+        radial-gradient(900px 500px at 90% 40%, rgba(34,197,94,.20), transparent 50%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1100px; margin:0 auto; padding:28px 18px 70px;}
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px;
+      background:rgba(17,21,37,.55);
+      border:1px solid var(--stroke);
+      border-radius:999px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      position:sticky; top:14px; z-index:50;
+    }
+    .brand{display:flex; gap:10px; align-items:center; font-weight:700; letter-spacing:.2px}
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), rgba(34,197,94,.8));
+      display:grid; place-items:center;
+      box-shadow: 0 12px 30px rgba(124,92,255,.25);
+      font-weight:900;
+    }
+    nav{display:flex; gap:14px; align-items:center}
+    nav a{
+      font-size:14px; color:var(--muted);
+      padding:8px 10px; border-radius:999px;
+    }
+    nav a:hover{background:rgba(255,255,255,.06); color:var(--text)}
+    .btn{
+      display:inline-flex; gap:10px; align-items:center; justify-content:center;
+      padding:12px 14px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:650;
+      cursor:pointer;
+      transition: transform .12s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(34,197,94,.85));
+      border:none;
+    }
+    .hero{
+      padding:70px 0 30px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:28px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr; padding-top:34px} header{position:static}}
+    .h-card{
+      background:rgba(17,21,37,.55);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .kicker{color:var(--muted); font-weight:600; letter-spacing:.18em; text-transform:uppercase; font-size:12px}
+    h1{font-size:44px; line-height:1.08; margin:14px 0 12px}
+    @media (max-width: 500px){ h1{font-size:36px}}
+    .sub{color:var(--muted); font-size:16px; margin:0 0 20px}
+    .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:14px}
+    .pillrow{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px}
+    .pill{
+      font-size:13px; color:var(--muted);
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+    }
+    .side{display:flex; flex-direction:column; gap:12px;}
+    .mini{
+      padding:16px;
+      border-radius:18px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+    }
+    .mini strong{display:block; margin-bottom:4px}
+    .grid{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr}}
+    .card{
+      border-radius:var(--radius);
+      border:1px solid var(--stroke);
+      background:rgba(17,21,37,.45);
+      padding:18px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.35);
+    }
+    .card h3{margin:8px 0 8px; font-size:18px}
+    .card p{margin:0; color:var(--muted); font-size:14px}
+    .section{margin-top:44px}
+    .section h2{margin:0 0 10px; font-size:26px}
+    .section .lead{color:var(--muted); margin:0 0 18px}
+    .price{
+      display:flex; flex-direction:column; gap:8px;
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+    }
+    .price .tag{font-size:12px; color:var(--muted); letter-spacing:.14em; text-transform:uppercase}
+    .price .amt{font-size:28px; font-weight:800}
+    .price ul{margin:8px 0 0; padding-left:18px; color:var(--muted)}
+    form{display:grid; gap:10px;}
+    input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:110px; resize:vertical}
+    footer{
+      margin-top:46px;
+      color:var(--muted);
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      border-top:1px solid var(--stroke);
+      padding-top:18px;
+    }
+    .note{font-size:13px}
+    .ok{color: rgba(34,197,94,.95); font-weight:700}
+    .warn{color:#fbbf24; font-weight:700}
+    .smallcaps{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+    .contactline{display:flex; flex-direction:column; gap:6px; color:var(--muted)}
+    .contactline a{color:var(--text)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="brand">
+        <div class="logo">R</div>
+        <div>
+          <div style="font-size:14px;">Ron's Enterprises</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:-2px;">Money clarity for business students</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#work">What you get</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <a class="btn primary" href="#pricing">Start managing money</a>
+    </header>
+
+    <section class="hero">
+      <div class="h-card">
+        <div class="kicker">Business Students • Financial Clarity</div>
+        <h1>Money Clarity for Business Students</h1>
+        <p class="sub">
+          A simple, student-friendly system to track income, expenses, and savings — designed for business students who want
+          financial clarity and better decisions.
+        </p>
+
+        <div class="cta">
+          <a class="btn primary" id="ctaTop" href="#pricing">Start managing money as a business student should</a>
+          <button class="btn" id="copyEmailBtn" type="button">Copy business email</button>
+        </div>
+
+        <div class="pillrow">
+          <div class="pill">Clear monthly overview</div>
+          <div class="pill">Smart categories</div>
+          <div class="pill">Savings goals</div>
+          <div class="pill">Beginner-friendly</div>
+        </div>
+
+        <p class="note" style="margin-top:16px;">
+          Built by <strong>Ron's Enterprises</strong> for students who want clarity — not chaos.
+        </p>
+      </div>
+
+      <div class="side">
+        <div class="mini">
+          <strong>Call / WhatsApp</strong>
+          <span class="contactline">
+            <a id="phoneLink" href="tel:07459070994">07459070994</a>
+            <span class="note">Tap to call on mobile.</span>
+          </span>
+        </div>
+        <div class="mini">
+          <strong>Business email</strong>
+          <span class="contactline">
+            <a id="emailLink" href="mailto:ronenteprises101@gmail.com">ronenteprises101@gmail.com</a>
+            <span class="note">Fast replies.</span>
+          </span>
+        </div>
+        <div class="mini">
+          <strong>Security</strong>
+          <span style="color:var(--muted);">
+            Hardened static site (no database) + strict browser protections.
+          </span>
+          <span class="note">Hosting headers shown at bottom.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section">
+      <h2>What this is</h2>
+      <p class="lead">A simple system that helps business students see exactly where their money goes.</p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="smallcaps">Template</div>
+          <h3>Student Finance Tracker</h3>
+          <p>Track income and expenses, see monthly totals, and stay in control.</p>
+        </div>
+        <div class="card">
+          <div class="smallcaps">Clarity</div>
+          <h3>Monthly Summary</h3>
+          <p>Know your savings status instantly: on track or overspending.</p>
+        </div>
+        <div class="card">
+          <div class="smallcaps">Goals</div>
+          <h3>Savings Goals</h3>
+          <p>Set targets and measure progress with a clean dashboard.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <h2>Pricing</h2>
+      <p class="lead">One simple price. Instant access.</p>
+
+      <div class="grid">
+        <div class="price">
+          <div class="tag">Student Finance Tracker</div>
+          <div class="amt">$11 <span style="color:var(--muted); font-weight:600;">/</span> £11</div>
+          <div style="color:var(--muted)">Notion template (instant)</div>
+          <ul>
+            <li>Income tracking</li>
+            <li>Expense categories</li>
+            <li>Monthly summary</li>
+            <li>Savings goals</li>
+          </ul>
+
+          <!-- Replace YOUR_GUMROAD_LINK with your actual Gumroad link -->
+          <a class="btn primary" id="buyBtn" href="#contact">Start managing money as a business student should</a>
+
+          <p class="note">
+            Want a “Buy Now” link? Replace the button link with your Gumroad checkout URL.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>What you’ll achieve</h3>
+          <p>✅ Know exactly what you spend weekly</p>
+          <p>✅ Stop “where did my money go?” moments</p>
+          <p>✅ Build better financial habits</p>
+          <p class="note" style="margin-top:10px;">Designed for business students who want clarity.</p>
+        </div>
+
+        <div class="card">
+          <h3>Need help setting it up?</h3>
+          <p>Message Ron’s Enterprises and I’ll guide you through importing the template.</p>
+          <p class="note" style="margin-top:10px;">Call or email below.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="section">
+      <h2>What you get</h2>
+      <p class="lead">Simple, structured, and built for students.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Dashboard</h3>
+          <p>One place to view income, expenses, and savings status.</p>
+        </div>
+        <div class="card">
+          <h3>Smart categories</h3>
+          <p>Food, transport, rent, subscriptions, study, entertainment, and more.</p>
+        </div>
+        <div class="card">
+          <h3>Monthly review habit</h3>
+          <p>A system that helps you make better financial decisions each month.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Contact Ron’s Enterprises</h2>
+      <p class="lead">Fastest way: call or email. Form opens your email app (no backend = safer).</p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Call / WhatsApp</h3>
+          <p><strong>Number:</strong> <a href="tel:07459070994">07459070994</a></p>
+          <p class="note">If you want WhatsApp click-to-chat, tell me and I’ll add it.</p>
+        </div>
+
+        <div class="card">
+          <h3>Email</h3>
+          <p><strong>Business email:</strong> <a href="mailto:ronenteprises101@gmail.com">ronenteprises101@gmail.com</a></p>
+          <p class="note">Use this for template questions or setup help.</p>
+        </div>
+
+        <div class="card">
+          <h3>Message form</h3>
+          <form id="contactForm" novalidate>
+            <input id="name" placeholder="Your name" maxlength="80" required />
+            <input id="email" type="email" placeholder="Your email" maxlength="120" required />
+            <textarea id="message" placeholder="What do you need? (template, setup, questions...)" maxlength="900" required></textarea>
+            <button class="btn primary" type="submit">Send</button>
+            <div id="status" class="note" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h3>Security notes (important)</h3>
+        <p class="note">
+          This site is intentionally a <strong>static one-file site</strong> (no server, no database), which massively reduces hacking risk.
+          For maximum security, host it on HTTPS (Netlify/GitHub Pages) and add security headers.
+        </p>
+        <p class="note"><span class="warn">If you want payments on-site</span>, use Gumroad/Stripe links (they handle the sensitive parts).</p>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> Ron's Enterprises — All rights reserved.</div>
+      <div class="note">Secure static site • No database • Tight CSP</div>
+    </footer>
+  </div>
+
+  <script>
+    // Branding / contact
+    const BUSINESS_NAME = "Ron's Enterprises";
+    const SITE_NAME = "Money Clarity for Business Students";
+    const CONTACT_EMAIL = "ronenteprises101@gmail.com";
+    const CONTACT_PHONE = "07459070994";
+
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Copy email button
+    document.getElementById("copyEmailBtn").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(CONTACT_EMAIL);
+        const btn = document.getElementById("copyEmailBtn");
+        const old = btn.textContent;
+        btn.textContent = "Copied ✅";
+        setTimeout(() => btn.textContent = old, 1200);
+      } catch (e) {
+        alert("Copy failed. Email is: " + CONTACT_EMAIL);
+      }
+    });
+
+    // Basic front-end validation (prevents malformed mailto content)
+    function isValidEmail(value){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value).trim());
+    }
+
+    // Contact form -> mailto (no backend = safer)
+    document.getElementById("contactForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+      const status = document.getElementById("status");
+
+      if(!name || !email || !message){
+        status.textContent = "Please fill in all fields.";
+        return;
+      }
+      if(!isValidEmail(email)){
+        status.textContent = "Please enter a valid email address.";
+        return;
+      }
+
+      const subject = encodeURIComponent(`[${BUSINESS_NAME}] ${SITE_NAME} — Message from ${name}`);
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nPhone (optional): \n\nMessage:\n${message}\n\n---\nSent via: ${SITE_NAME}`
+      );
+
+      // Use mailto to avoid running a server on your site
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+      status.innerHTML = `<span class="ok">Opening your email app…</span>`;
+    });
+  </script>
+</body>
+</html>
